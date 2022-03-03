@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreItemRequest extends FormRequest
+class StoreRunnerDataRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,11 @@ class StoreItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'code' => 'required|unique:items',
-            'category_id' => 'required',
-            'type' => 'required',
-            'outlet_id' => 'required',
-            'added_date' => 'required',
-            'rent_per_day' => 'required_if:type,Rentable',
-            'rent_per_week' => 'required_if:type,Rentable',
-            'rent_per_month' => 'required_if:type,Rentable',
-            'rent' => 'required_if:type,Supportable',
-            'market_value' => 'required',
+            'runner_name' => 'required',
+            'radius' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'number_of_laps' => 'required',
         ];
     }
 

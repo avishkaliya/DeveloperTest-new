@@ -18,23 +18,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return redirect()->route('dashboard');
+Route::get('/runner-data', function () {
+    return view('create');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/', function () {
+//     return redirect()->route('dashboard');
+// });
 
-Route::middleware(['auth'])->group(function(){
-    Route::resource('item-categories', ItemCategoryController::class);
-    Route::resource('items', ItemController::class);
-    Route::resource('outlets', OutletController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('invoices', InvoiceController::class);
-    Route::resource('runner-data', RunnerDataController::class);
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
-});
-
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
