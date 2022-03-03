@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  rentitem-app:
+    build:
+      context: .
+      dockerfile: ./app.Dockerfile
+      args:
+        uid: ${UID}
+    image: rentitem-app:latest
+    container_name: rentitem-app
+    environment:
+      - APACHE_RUN_USER=#${UID}
+      - APACHE_RUN_GROUP=#${UID}
+    volumes:
+      - ./:/var/www/html:delegated
+      - ./docker-configs/env/php.ini:/usr/local/etc/php/php.ini:ro
+    ports:
+      - 8001:80
+  rentitem-mysql:
+    image: mysql:8.0.25
+    container_name: rentitem-mysql
+    ports:
+      - 3306:3306
+    env_file:
+      - ./docker-configs/env/mysql.env
+    command: ['--default-time-zone=+00:00','--default-authentication-plugin=mysql_native_password']
+    volumes:
+      - rentitem-mysql-data:/var/lib/mysql
+  rentitem-phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: rentitem-phpmyadmin
+    restart: always
+    env_file:
+      - ./docker-configs/env/phpmyadmin.env
+    ports:
+      - "8002:80"
+  rentitem-mailhog:
+    image: mailhog/mailhog
+    container_name: rentitem-mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8003:8025
+  rentitem-docs:
+    image: nginx
+    container_name: rentitem-docs
+    ports:
+      - 8004:80
+    volumes:
+      - ./docs:/usr/share/nginx/html
+volumes: 
+  rentitem-mysql-data:
